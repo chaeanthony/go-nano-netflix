@@ -63,10 +63,10 @@ func main() {
 	mux.HandleFunc("POST /auth/refresh", cfg.handlerRefresh)
 	mux.HandleFunc("POST /auth/revoke", cfg.handlerRevoke)
 
-	// mux.HandleFunc("GET /api/shows", cfg.handlerShowsGet)
-	// mux.HandleFunc("GET /api/shows/{showId}", cfg.handlerShowsGetById)
-	// mux.HandleFunc("GET /api/movies", cfg.handlerMoviesGet)
-	// mux.HandleFunc("GET /api/movies/{movieId}", cfg.handlerMoviesGetById)
+	mux.HandleFunc("GET /api/titles", cfg.handlerTitlesGet)
+	mux.HandleFunc("GET /api/titles/{titleId}", cfg.handlerTitleGetById)
+	mux.HandleFunc("GET /api/shows", cfg.handlerShowsGet)
+	mux.HandleFunc("GET /api/movies", cfg.handlerMoviesGet)
 	// mux.HandleFunc("GET /api/watchlist", cfg.handlerWatchlistGet)
 	// mux.HandleFunc("POST /api/watchlist", cfg.handlerWatchlistGet)
 

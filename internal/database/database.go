@@ -60,6 +60,7 @@ func (c *Client) autoMigrate() error {
     title VARCHAR(255) NOT NULL,
 		type VARCHAR(15) NOT NULL, 
 		description TEXT,
+		origin_date TIMESTAMP,
 		created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
 		updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 	);
