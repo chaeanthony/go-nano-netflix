@@ -57,7 +57,7 @@ func (c *Client) GetUsers() ([]User, error) {
 	return users, nil
 }
 
-func (c *Client) GetUserByEmail(email string) (*User, error) {
+func (c *Client) GetUserByEmail(email string) (User, error) {
 	query := `
 		SELECT id, created_at, updated_at, email, password
 		FROM users
@@ -68,18 +68,18 @@ func (c *Client) GetUserByEmail(email string) (*User, error) {
 	err := c.db.QueryRow(query, email).Scan(&id, &user.CreatedAt, &user.UpdatedAt, &user.Email, &user.Password)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, nil
+			return User{}, nil
 		}
-		return nil, err
+		return User{}, err
 	}
 	user.ID, err = uuid.Parse(id)
 	if err != nil {
-		return nil, err
+		return User{}, err
 	}
-	return &user, nil
+	return user, nil
 }
 
-func (c *Client) GetUserByRefreshToken(token string) (*User, error) {
+func (c *Client) GetUserByRefreshToken(token string) (User, error) {
 	query := `
 		SELECT u.id, u.email, u.created_at, u.updated_at
 		FROM users u
@@ -92,19 +92,19 @@ func (c *Client) GetUserByRefreshToken(token string) (*User, error) {
 	err := c.db.QueryRow(query, token).Scan(&id, &user.Email, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, nil
+			return User{}, nil
 		}
-		return nil, err
+		return User{}, err
 	}
 	user.ID, err = uuid.Parse(id)
 	if err != nil {
-		return nil, err
+		return User{}, err
 	}
 
-	return &user, nil
+	return user, nil
 }
 
-func (c *Client) CreateUser(params CreateUserParams) (*User, error) {
+func (c *Client) CreateUser(params CreateUserParams) (User, error) {
 	id := uuid.New()
 
 	query := `
@@ -115,13 +115,13 @@ func (c *Client) CreateUser(params CreateUserParams) (*User, error) {
 	`
 	_, err := c.db.Exec(query, id.String(), params.Email, params.Password)
 	if err != nil {
-		return nil, err
+		return User{}, err
 	}
 
 	return c.GetUserById(id)
 }
 
-func (c *Client) GetUserById(id uuid.UUID) (*User, error) {
+func (c *Client) GetUserById(id uuid.UUID) (User, error) {
 	query := `
 		SELECT id, created_at, updated_at, email, password
 		FROM users
@@ -132,22 +132,22 @@ func (c *Client) GetUserById(id uuid.UUID) (*User, error) {
 	err := c.db.QueryRow(query, id.String()).Scan(&idStr, &user.CreatedAt, &user.UpdatedAt, &user.Email, &user.Password)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, nil
+			return User{}, nil
 		}
-		return nil, err
+		return User{}, err
 	}
 	user.ID, err = uuid.Parse(idStr)
 	if err != nil {
-		return nil, err
+		return User{}, err
 	}
-	return &user, nil
+	return user, nil
 }
 
-func (c *Client) UpdateUser(params UpdateUserParams) (*User, error) {
+func (c *Client) UpdateUser(params UpdateUserParams) (User, error) {
 	query := `UPDATE users SET email = $2, hashed_password = $3 WHERE id = $1`
 	_, err := c.db.Exec(query, params.ID.String(), params.Email, params.HashedPassword)
 	if err != nil {
-		return nil, err
+		return User{}, err
 	}
 
 	return c.GetUserById(params.ID)
