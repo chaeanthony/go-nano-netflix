@@ -29,28 +29,42 @@ To run this API, you need:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/chaeanthony/chirpy.git
-cd chirpy
+git clone https://github.com/chaeanthony/go-netflix.git
+cd go-netflix
 ```
 
 2. Install dependencies:
 
+- [Go](https://golang.org/doc/install)
+
 ```bash
-go mod tidy
+go mod download
 ```
 
 3. Create .env:
 
-```
-DB_URL = "postgres database url"
-PLATFORM = "dev" (prevent dangerous endpoints from being accessed in production)
-JWT_SECRET = "jwt secret"
+Copy the `.env.example` file to `.env` and fill in the values.
+
+```bash
+cp .env.example .env
 ```
 
 Can use the following to generate a random 64-byte string encoded in Base64 as jwt secret
 
 ```bash
 openssl rand -base64 64
+```
+
+4. Run server:
+
+```bash
+go run .
+```
+
+OR
+
+```bash
+go build -o out && ./out
 ```
 
 ## API
