@@ -70,6 +70,20 @@ func (c *Client) autoMigrate() error {
 		return err
 	}
 
+	watchlistTable := `
+	CREATE TABLE watchlists (
+    watchlist_id SERIAL PRIMARY KEY, 
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,            
+    title_id INT NOT NULL REFERENCES media_titles(id),           
+		created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+		updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+	);
+	`
+	_, err = c.db.Exec(watchlistTable)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

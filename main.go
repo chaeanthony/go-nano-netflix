@@ -67,8 +67,8 @@ func main() {
 	mux.HandleFunc("GET /api/titles/{titleId}", cfg.handlerTitleGetById)
 	mux.HandleFunc("GET /api/shows", cfg.handlerShowsGet)
 	mux.HandleFunc("GET /api/movies", cfg.handlerMoviesGet)
-	// mux.HandleFunc("GET /api/watchlist", cfg.handlerWatchlistGet)
-	// mux.HandleFunc("POST /api/watchlist", cfg.handlerWatchlistGet)
+	mux.HandleFunc("GET /api/watchlist", cfg.handlerWatchlistGet)
+	mux.HandleFunc("POST /api/watchlist", cfg.handlerWatchlistItemCreate)
 
 	srv := &http.Server{
 		Addr:    ":" + port,
