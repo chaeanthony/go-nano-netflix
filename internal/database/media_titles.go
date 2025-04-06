@@ -79,6 +79,14 @@ func (c *Client) GetMovies() ([]MediaTitle, error) {
 	return c.getTitlesByType(TypeMovie)
 }
 
-// func (c *Client) getTitle(title string) {}
-// func (c *Client) getTitleById(id string) {}
-// func (c *Client) createTitle(params MediaTitle) {}
+func (c *Client) CreateTitle(params MediaTitle) error {
+	query := `
+		INSERT INTO media_titles 
+			(title, type, description, origin_date, created_at, updated_at) 
+		VALUES 
+			($1, $2, $3, $4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+	`
+
+	_, err := c.db.Exec(query, params.Title, params.Type, params.Description, params.OriginDate)
+	return err
+}
