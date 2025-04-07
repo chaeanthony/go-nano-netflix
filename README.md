@@ -1,6 +1,6 @@
 # Mini-netflix clone
 
-Mini netflix clone. Use as starter code for similar applications. Built using Go (Golang), PostgreSQL, React, Tailwind.
+Backend for a mini netflix clone. Use as starter code for similar applications. Built using Go (Golang), PostgreSQL.
 
 Features:
 
