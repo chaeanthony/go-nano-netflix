@@ -16,6 +16,7 @@ type MediaTitle struct {
 	UpdatedAt   time.Time `json:"updated_at"`
 }
 
+// Gets all titles
 func (cfg *apiConfig) handlerTitlesGet(w http.ResponseWriter, r *http.Request) {
 	titles, err := cfg.db.GetTitles()
 	if err != nil {
@@ -43,6 +44,7 @@ func (cfg *apiConfig) handlerTitleGetById(w http.ResponseWriter, r *http.Request
 	respondJSON(w, http.StatusOK, title)
 }
 
+// Gets all titles of type show
 func (cfg *apiConfig) handlerShowsGet(w http.ResponseWriter, r *http.Request) {
 	shows, err := cfg.db.GetShows()
 	if err != nil {
@@ -53,6 +55,7 @@ func (cfg *apiConfig) handlerShowsGet(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, shows)
 }
 
+// Gets all titles of type movie
 func (cfg *apiConfig) handlerMoviesGet(w http.ResponseWriter, r *http.Request) {
 	shows, err := cfg.db.GetMovies()
 	if err != nil {
