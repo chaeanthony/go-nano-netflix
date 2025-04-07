@@ -1,27 +1,28 @@
-package main
+package api
 
 import (
 	"context"
 	"net/http"
 
 	"github.com/chaeanthony/go-netflix/internal/auth"
+	"github.com/chaeanthony/go-netflix/utils"
 )
 
 type key int
 
 const userIDKey key = 0
 
-func (cfg *apiConfig) AuthTokenMiddleware(next http.Handler) http.Handler {
+func (cfg *APIConfig) AuthTokenMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token, err := auth.GetBearerToken(r.Header)
 		if err != nil {
-			respondError(w, http.StatusUnauthorized, "Couldn't find token", err)
+			utils.RespondError(w, http.StatusUnauthorized, "Couldn't find token", err)
 			return
 		}
 
-		userID, err := auth.ValidateJWT(token, cfg.jwtSecret)
+		userID, err := auth.ValidateJWT(token, cfg.JWTSecret)
 		if err != nil {
-			respondError(w, http.StatusUnauthorized, "Couldn't validate token", err)
+			utils.RespondError(w, http.StatusUnauthorized, "Couldn't validate token", err)
 			return
 		}
 

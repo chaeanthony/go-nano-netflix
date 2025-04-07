@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"encoding/json"
@@ -7,6 +7,7 @@ import (
 
 	"github.com/chaeanthony/go-netflix/internal/auth"
 	"github.com/chaeanthony/go-netflix/internal/database"
+	"github.com/chaeanthony/go-netflix/utils"
 	"github.com/google/uuid"
 )
 
@@ -17,7 +18,7 @@ type User struct {
 	Email     string    `json:"email"`
 }
 
-func (cfg *apiConfig) handlerUsersCreate(w http.ResponseWriter, r *http.Request) {
+func (cfg *APIConfig) HandlerUsersCreate(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Password string `json:"password"`
 		Email    string `json:"email"`
@@ -27,29 +28,29 @@ func (cfg *apiConfig) handlerUsersCreate(w http.ResponseWriter, r *http.Request)
 	params := parameters{}
 	err := decoder.Decode(&params)
 	if err != nil {
-		respondError(w, http.StatusInternalServerError, "Couldn't decode parameters", err)
+		utils.RespondError(w, http.StatusInternalServerError, "Couldn't decode parameters", err)
 		return
 	}
 
 	if params.Password == "" || params.Email == "" {
-		respondError(w, http.StatusBadRequest, "Email and password are required", nil)
+		utils.RespondError(w, http.StatusBadRequest, "Email and password are required", nil)
 		return
 	}
 
 	hashedPassword, err := auth.HashPassword(params.Password)
 	if err != nil {
-		respondError(w, http.StatusInternalServerError, "Couldn't hash password", err)
+		utils.RespondError(w, http.StatusInternalServerError, "Couldn't hash password", err)
 		return
 	}
 
-	user, err := cfg.db.CreateUser(database.CreateUserParams{
+	user, err := cfg.DB.CreateUser(database.CreateUserParams{
 		Email:    params.Email,
 		Password: hashedPassword,
 	})
 	if err != nil {
-		respondError(w, http.StatusInternalServerError, "Couldn't create user", err)
+		utils.RespondError(w, http.StatusInternalServerError, "Couldn't create user", err)
 		return
 	}
 
-	respondJSON(w, http.StatusCreated, user)
+	utils.RespondJSON(w, http.StatusCreated, user)
 }

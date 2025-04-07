@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func respondError(w http.ResponseWriter, code int, msg string, err error) {
+func RespondError(w http.ResponseWriter, code int, msg string, err error) {
 	if err != nil {
 		log.Println(err)
 	}
@@ -16,12 +16,12 @@ func respondError(w http.ResponseWriter, code int, msg string, err error) {
 	type errorResponse struct {
 		Error string `json:"error"`
 	}
-	respondJSON(w, code, errorResponse{
+	RespondJSON(w, code, errorResponse{
 		Error: msg,
 	})
 }
 
-func respondJSON(w http.ResponseWriter, code int, payload interface{}) {
+func RespondJSON(w http.ResponseWriter, code int, payload interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	dat, err := json.Marshal(payload)
 	if err != nil {

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/chaeanthony/go-netflix/api"
 	"github.com/chaeanthony/go-netflix/internal/database"
 	"github.com/joho/godotenv"
 
@@ -12,13 +13,6 @@ import (
 )
 
 var DefaultVideoUrl = "https://www.youtube.com/watch?v=ZXsQAXx_ao0"
-
-type apiConfig struct {
-	db        *database.Client
-	jwtSecret string
-	platform  string
-	port      string
-}
 
 func main() {
 	godotenv.Load()
@@ -48,39 +42,33 @@ func main() {
 		log.Fatal("PORT environment variable is not set")
 	}
 
-	cfg := apiConfig{
-		db:        db,
-		jwtSecret: jwtSecret,
-		platform:  platform,
-		port:      port,
+	cfg := api.APIConfig{
+		DB:        db,
+		JWTSecret: jwtSecret,
+		Platform:  platform,
+		Port:      port,
 	}
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /api/healthz", handlerReadiness)
+	mux.HandleFunc("GET /api/healthz", cfg.HandlerReadiness)
 
-	mux.HandleFunc("POST /auth/signup", cfg.handlerUsersCreate)
-	mux.HandleFunc("POST /auth/login", cfg.handlerLogin)
-	mux.HandleFunc("POST /auth/refresh", cfg.handlerRefresh)
-	mux.HandleFunc("POST /auth/revoke", cfg.handlerRevoke)
+	mux.HandleFunc("POST /auth/signup", cfg.HandlerUsersCreate)
+	mux.HandleFunc("POST /auth/login", cfg.HandlerLogin)
+	mux.HandleFunc("POST /auth/refresh", cfg.HandlerRefresh)
+	mux.HandleFunc("POST /auth/revoke", cfg.HandlerRevoke)
 
-	mux.HandleFunc("GET /api/titles", cfg.handlerTitlesGet)
-	mux.HandleFunc("GET /api/titles/{titleId}", cfg.handlerTitleGetById)
-	mux.HandleFunc("GET /api/shows", cfg.handlerShowsGet)
-	mux.HandleFunc("GET /api/movies", cfg.handlerMoviesGet)
-	mux.Handle("GET /api/watchlist", cfg.AuthTokenMiddleware(http.HandlerFunc(cfg.handlerWatchlistGet)))
-	mux.Handle("POST /api/watchlist", cfg.AuthTokenMiddleware(http.HandlerFunc(cfg.handlerWatchlistItemCreate)))
+	mux.HandleFunc("GET /api/titles", cfg.HandlerTitlesGet)
+	mux.HandleFunc("GET /api/titles/{titleId}", cfg.HandlerTitleGetById)
+	mux.HandleFunc("GET /api/shows", cfg.HandlerShowsGet)
+	mux.HandleFunc("GET /api/movies", cfg.HandlerMoviesGet)
+	mux.Handle("GET /api/watchlist", cfg.AuthTokenMiddleware(http.HandlerFunc(cfg.HandlerWatchlistGet)))
+	mux.Handle("POST /api/watchlist", cfg.AuthTokenMiddleware(http.HandlerFunc(cfg.HandlerWatchlistItemCreate)))
 
 	srv := &http.Server{
 		Addr:    ":" + port,
 		Handler: mux,
 	}
 
-	log.Printf("Serving on: http://localhost:%s/. Platform: %s\n", port, cfg.platform)
+	log.Printf("Serving on: http://localhost:%s/. Platform: %s\n", port, cfg.Platform)
 	log.Fatal(srv.ListenAndServe())
-}
-
-func handlerReadiness(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Content-Type", "text/plain; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(http.StatusText(http.StatusOK)))
 }
