@@ -1,4 +1,4 @@
-module github.com/chaeanthony/go-netflix
+module github.com/chaeanthony/go-nano-netflix
 
 go 1.23.2
 

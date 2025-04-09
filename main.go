@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/chaeanthony/go-netflix/api"
-	"github.com/chaeanthony/go-netflix/internal/database"
+	"github.com/chaeanthony/go-nano-netflix/api"
+	"github.com/chaeanthony/go-nano-netflix/internal/database"
 	"github.com/joho/godotenv"
 
 	_ "github.com/lib/pq"

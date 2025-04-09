@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/chaeanthony/go-netflix/utils"
+	"github.com/chaeanthony/go-nano-netflix/utils"
 )
 
 type MediaTitle struct {

@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 
-	"github.com/chaeanthony/go-netflix/internal/database"
+	"github.com/chaeanthony/go-nano-netflix/internal/database"
 )
 
 type APIConfig struct {

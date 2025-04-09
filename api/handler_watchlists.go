@@ -6,7 +6,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/chaeanthony/go-netflix/utils"
+	"github.com/chaeanthony/go-nano-netflix/utils"
 	"github.com/google/uuid"
 )
 

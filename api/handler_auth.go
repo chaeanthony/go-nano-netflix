@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/chaeanthony/go-netflix/internal/auth"
-	"github.com/chaeanthony/go-netflix/internal/database"
-	"github.com/chaeanthony/go-netflix/utils"
+	"github.com/chaeanthony/go-nano-netflix/internal/auth"
+	"github.com/chaeanthony/go-nano-netflix/internal/database"
+	"github.com/chaeanthony/go-nano-netflix/utils"
 )
 
 func (cfg *APIConfig) HandlerLogin(w http.ResponseWriter, r *http.Request) {

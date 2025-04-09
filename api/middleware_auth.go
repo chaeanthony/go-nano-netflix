@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/chaeanthony/go-netflix/internal/auth"
-	"github.com/chaeanthony/go-netflix/utils"
+	"github.com/chaeanthony/go-nano-netflix/internal/auth"
+	"github.com/chaeanthony/go-nano-netflix/utils"
 )
 
 type key int
