@@ -14,6 +14,7 @@ Features:
 - [API](#api)
   - [User Management](#user-management)
   - [Title Management](#title-management)
+  - [Watchlist Management](#watchlist-management)
 
 ## Getting Started
 
@@ -26,12 +27,7 @@ To run this API, you need:
 
 ### Installation
 
-1. Clone the repository:
-
-```bash
-git clone https://github.com/chaeanthony/go-netflix.git
-cd go-netflix
-```
+1. Fork/Clone the repository:
 
 2. Install dependencies:
 
@@ -73,6 +69,79 @@ go build -o out && ./out
 
 The base URL for the API is `/api`. Use `/auth` for authentication APIs.
 
+### Health Check
+
+- **Path**: `/api/healthz`
+- **Method**: `GET`
+- **Description**: Returns API ready.
+
 ### User Management
 
+#### Create User
+
+- **Path**: `/auth/signup`
+- **Method**: `POST`
+- **Parameters**: `{"email": "test@email.com", "password": "123456"}`
+- **Description**: Creates a new user.
+
+#### User Login
+
+- **Path**: `/auth/login`
+- **Method**: `POST`
+- **Parameters**: `{"email": "test@email.com", "password": "123456"}`
+- **Description**: Authenticates a user and returns a jwt token and refresh token.
+
+#### Refresh Token
+
+- **Path**: `/auth/refresh`
+- **Method**: `POST`
+- **Description**: Accepts Bearer token in authorization header (this is a refresh token). Uses refresh token to create a new jwt token.
+
+#### Revoke Token
+
+- **Path**: `/auth/revoke`
+- **Method**: `POST`
+- **Description**: Revokes the user's refresh token.
+
 ### Title Management
+
+#### Get All Titles
+
+- **Path**: `/api/titles`
+- **Method**: `GET`
+- **Description**: Retrives all titles
+
+#### Get Title by ID
+
+- **Path**: `/api/titles/{titleId}`
+- **Method**: `GET`
+- **Description**: Retrieves details of a specific title based on its ID.
+
+#### Get All Shows
+
+- **Path**: `/api/shows`
+- **Method**: `GET`
+- **Description**: Retrieves all titles of type "show" available in the system.
+
+#### Get All Movies
+
+- **Path**: `/api/movies`
+- **Method**: `GET`
+- **Description**: Retrieves all titles of type "movie" available in the system.
+
+### Watchlist Management
+
+#### Get User's Watchlist
+
+- **Path**: `/api/watchlist`
+- **Headers**: `Authorization: Bearer <token>`
+- **Method**: `GET`
+- **Description**: Retrieves the watchlist for the authenticated user. Requires a valid bearer token for authentication.
+
+#### Add Item to User's Watchlist
+
+- **Path**: `/api/watchlist`
+- **Headers**: `Authorization: Bearer <token>`
+- **Method**: `POST`
+- **Parameters**: `{"title_id": <int>}`
+- **Description**: Retrieves the watchlist for the authenticated user. Requires a valid bearer token for authentication.
